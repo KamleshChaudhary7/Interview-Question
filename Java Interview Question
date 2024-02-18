@@ -1,0 +1,362 @@
+################################################## JAVA Interview Question ###################################################
+1) JVM Architecture
+Answer : The Java Virtual Machine (JVM) is a crucial component of the Java platform. It serves as an abstract computing machine that enables Java bytecode to be executed on various hardware platforms. Here's an overview of the JVM architecture:
+
+Class Loader Subsystem: This subsystem is responsible for loading class files into the JVM. It consists of three distinct components:
+
+Bootstrap Class Loader: Loads core Java classes (e.g., those from java.lang package).
+Extension Class Loader: Loads classes from extension libraries, typically located in the jre/lib/ext directory.
+Application Class Loader: Loads classes from the application classpath.
+
+Java 7::::
+Runtime Data Area: The JVM's memory is divided into several runtime data areas, including:
+Method Area: Stores class structures such as class and interface definitions, method data, and runtime constant pool.
+Heap: Memory shared among all Java threads for storing objects and arrays. It's divided into two generations: Young Generation and Old Generation.
+Java Stack: Each Java thread has its own stack, which stores method invocations and local variables. It's divided into frames, with each frame containing information about a single method invocation.
+PC Register: Each Java thread has its own Program Counter (PC) register, which stores the address of the currently executing JVM instruction.
+Native Method Stack: Stores native method invocations.
+
+Changes in Java 8::::
+Runtime Data Area:
+Heap: The memory area where objects are allocated. The memory management strategy has been improved, with enhancements such as the G1 Garbage Collector introduced in Java 9 for better performance and efficiency.
+Java Stack: Each Java thread has its own stack, which stores method invocations and local variables.
+PC Register: Each Java thread has its own Program Counter (PC) register, which stores the address of the currently executing JVM instruction.
+Native Method Stack: Stores native method invocations.
+Metaspace: Replaces PermGen from Java 8 onwards. It is responsible for storing class metadata, method information, constant pool data, JIT compiler optimizations, and interned strings. Metaspace is allocated from native memory (off-heap memory) and dynamically resizes based on application demand.
+
+Execution Engine: The Execution Engine executes Java bytecode instructions. It consists of:
+  Interpreter: Interprets bytecode instructions one at a time and executes them.
+  Just-In-Time (JIT) Compiler: Translates frequently executed bytecode sequences into native machine code for improved performance.
+  Garbage Collector (GC): Manages the JVM's heap memory by reclaiming memory occupied by objects that are no longer reachable.
+  Native Method Interface: This interface allows Java applications to call native methods written in languages like C and C++.
+
+Native Method Libraries: Libraries containing native methods.
+
+Java Native Interface (JNI): Provides a standard programming interface for calling native methods and accessing native libraries from Java code.
+
+Java Application Programming Interface (API): The standard libraries and classes provided by the Java Development Kit (JDK).
+
+The JVM architecture provides platform independence by abstracting the underlying hardware and operating system, allowing Java programs to run on any device or platform that has a compatible JVM implementation.
+
+2) JAVA Memory Model
+Answer : 
+The Java Memory Model (JMM) governs how Java programs interact with memory in a multi-threaded environment. In addition to specifying the rules and guarantees regarding shared memory and synchronization, it also describes how memory is organized and managed within the Java Virtual Machine (JVM). Within the JVM, memory is divided into several areas, including PermGen (Permanent Generation), Old Generation (Tenured Generation), and Young Generation. However, it's important to note that as of Java 8, PermGen has been replaced by the Metaspace.
+
+Here's how these memory areas relate to the Java Memory Model:
+
+Young Generation:
+The Young Generation is where newly created objects are allocated.
+It's further divided into two spaces: Eden Space and Survivor Spaces (usually two Survivor Spaces, named "from" and "to").
+Objects initially go into the Eden Space. When the Eden Space fills up, a minor garbage collection (also known as a minor collection or young collection) occurs.
+Surviving objects are moved to one of the Survivor Spaces. After several minor garbage collections, surviving objects are eventually moved to the Old Generation.
+
+Old Generation (Tenured Generation):
+The Old Generation contains long-lived objects that have survived multiple garbage collection cycles in the Young Generation.
+It's also sometimes referred to as the Tenured Generation.
+When the Old Generation fills up, a major garbage collection (also known as a major collection or full collection) occurs.
+Objects that cannot be reclaimed during garbage collection in the Old Generation may eventually lead to an OutOfMemoryError.
+
+Metaspace (formerly PermGen):
+Starting from Java 8, PermGen (Permanent Generation) has been replaced by Metaspace.
+Metaspace is responsible for storing class metadata, including class definitions, method information, constant pool data, and JIT (Just-In-Time) compiler optimizations.
+Unlike PermGen, which had a fixed size, Metaspace dynamically grows and shrinks based on the application's demand.
+
+3) PremGen vs MetaSpace
+Answer: PermGen (Permanent Generation) and Metaspace are two different memory areas in the Java Virtual Machine (JVM) used for storing metadata related to classes and methods, but they serve this purpose in different ways and have different characteristics.
+
+PermGen (Permanent Generation):
+PermGen was introduced in older versions of Java (prior to Java 8) and was used to store metadata related to classes, methods, and other runtime artifacts.
+It had a fixed size and was a part of the JVM's heap memory.
+PermGen was known to cause issues such as memory leaks and OutOfMemoryError due to its fixed size and inability to be garbage collected effectively.
+It contained the following types of data:
+Class definitions
+Method information
+Constant pool data
+String literals
+
+Metaspace:
+Metaspace was introduced in Java 8 as a replacement for PermGen.
+Unlike PermGen, Metaspace is not part of the JVM's heap memory; it's allocated from the native memory.
+Metaspace is designed to dynamically resize based on the application's demand, which helps prevent issues related to fixed-size memory areas like PermGen.
+It stores metadata related to classes, methods, and other runtime artifacts, similar to PermGen.
+Metaspace contains the following types of data:
+Class definitions
+Method information
+Constant pool data
+JIT (Just-In-Time) compiler optimizations
+Interned strings
+
+4) String, StringBuilder and StringBuffer
+Answer: 
+String:
+String objects are immutable, meaning once created, their content cannot be changed.
+Whenever operations like concatenation or substring are performed on strings, new string objects are created.
+Immutable strings are inherently thread-safe, making them suitable for scenarios where multiple threads access or share strings concurrently without the risk of data corruption.
+Due to their immutability, strings are also suitable for caching and as keys in hash-based data structures like HashMap.
+Example:
+String str = "Hello";
+
+StringBuilder:
+StringBuilder is a mutable alternative to String. It allows for dynamic modifications to the string content without creating new string objects.
+It provides various methods like append(), insert(), delete(), replace(), etc., for modifying string content efficiently.
+Since StringBuilder is mutable and not synchronized, it offers better performance than StringBuffer.
+It's recommended to use StringBuilder in single-threaded scenarios or in situations where thread safety is handled explicitly by the programmer.
+Example:
+StringBuilder sb = new StringBuilder();
+sb.append("Hello");
+
+StringBuffer:
+StringBuffer is similar to StringBuilder but is synchronized, making it thread-safe.
+While StringBuffer provides the same set of methods for string manipulation as StringBuilder, each of its methods is synchronized, ensuring thread safety.
+Due to its synchronization overhead, StringBuffer may be slower in performance compared to StringBuilder.
+It's suitable for multithreaded environments where multiple threads need to modify the same string concurrently, and thread safety is essential.
+Example:
+StringBuffer sb = new StringBuffer();
+sb.append("Hello");
+In summary, String is immutable and thread-safe, StringBuilder is mutable but not thread-safe, and StringBuffer is both mutable and thread-safe. The choice between them depends on the specific requirements of your application, such as performance, thread safety, and mutability.
+
+5) Why String is immutable?
+Answer: Strings are immutable in Java to ensure thread safety, simplify caching, enable secure handling of sensitive data, provide consistent behavior in hash-based collections, and allow for optimizations such as string interning.
+
+6) String Pool Constant
+Answer: The string pool, also known as the string constant pool, is a special area in the Java memory where unique string literals are stored. These string literals are created using double quotes and are automatically interned by the Java Virtual Machine (JVM), meaning that multiple references to the same string literal will point to the same memory location. This helps conserve memory by avoiding duplicate string objects with the same value. Strings created using the String.intern() method are also added to the string pool if not already present, allowing for efficient string comparison using the == operator.
+
+7) String s1 = new String("abc") How many objects created?
+Answer: When you write String s1 = new String("abc"), two objects are created:
+String Literal: The string literal "abc" is stored in the string pool (also known as the string constant pool) if it doesn't already exist there. If "abc" already exists in the string pool, then no new object is created for it.
+String Object: The new String("abc") expression creates a new String object in the heap memory, even if the string literal "abc" already exists in the string pool. This is because the new keyword explicitly instructs the JVM to create a new object. Therefore, a separate String object is created in the heap memory with the value "abc", distinct from the string literal "abc" in the string pool.
+So, in total, two objects are created: one in the string pool (if "abc" doesn't already exist there) and one in the heap memory.
+
+8) String s1 = new String("abc") and String s2 = "abc" How many objects created?
+Answer : In the code String s1 = new String("abc") and String s2 = "abc", three objects are created:
+String Literal: "abc" is a string literal, which is stored in the string pool (string constant pool) if it doesn't already exist there. If "abc" already exists in the string pool, then no new object is created for it.
+String Object: new String("abc") explicitly creates a new String object in the heap memory, separate from the string literal in the string pool. This results in the creation of a new String object with the value "abc".
+String Reference Object: Both s1 and s2 are references to String objects. These references are created in the stack memory, pointing to the respective String objects created in the heap memory.
+So, in total, three objects are created: one string literal in the string pool, one String object in the heap memory, and two String reference objects in the stack memory.
+
+9) Custom Immutable Class
+Answer: 
+1) Declare the class as final: Prevent subclassing to maintain immutability.
+2) Make all fields private and final: Ensure fields cannot be modified after object creation.
+3) Omit setter methods: Do not provide methods to modify fields after object creation.
+4) Ensure deep immutability: Defensively copy mutable fields during object construction to prevent external modification. This includes creating deep copies of mutable objects to maintain immutability.
+5) Provide getter methods: Allow access to field values without modification.
+6) Prevent method overriding: Make methods final or the class final to maintain behavior.
+7) Follow immutability principles: Ensure thread safety and prevent unintended modifications.
+
+Example :
+import java.util.ArrayList;
+import java.util.List;
+
+public final class ImmutableClass {
+    private final int id;
+    private final String name;
+    private final List<String> mutableList;
+
+    // Constructor with deep copy for mutableList
+    public ImmutableClass(int id, String name, List<String> mutableList) {
+        this.id = id;
+        this.name = name;
+        this.mutableList = new ArrayList<>(mutableList); // Deep copy to maintain immutability
+    }
+
+    // Getter methods for id, name, and mutableList
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public List<String> getMutableList() {
+        return new ArrayList<>(mutableList); // Deep copy to prevent modification of the original list
+    }
+}
+
+10) JDK, JRE, JVM
+JVM (Java Virtual Machine):
+Interprets Java bytecode and executes it on the underlying hardware.
+Provides memory management, garbage collection, and exception handling.
+Ensures platform independence by translating bytecode to machine-specific instructions.
+Different implementations of JVM (e.g., Oracle HotSpot, OpenJ9) optimize performance and memory usage.
+
+JRE (Java Runtime Environment):
+Includes JVM, core Java libraries, and other runtime components.
+Provides the environment necessary for running Java applications.
+Users need to install JRE on their systems to execute Java programs.
+
+JDK (Java Development Kit):
+Contains JRE along with development tools like Java compiler (javac), debugger (jdb), and other utilities.
+Additional libraries and documentation are included for Java developers.
+Used by developers to write, compile, debug, and deploy Java applications.
+
+11) Shallow Copy vs Deep Copy
+Answer: 
+Shallow Copy:
+A shallow copy creates a new object and copies all of the fields of the original object to the new object.
+If the field is a primitive type, it is copied directly. If the field is a reference type, the reference (memory address) to the original object is copied to the new object, but the object itself is not copied.
+As a result, changes made to the fields of the copied object will affect the original object, and vice versa if the fields are mutable objects.
+Shallow copy is simpler and faster than deep copy, but it may not provide true independence between the original and copied objects.
+
+Deep Copy:
+A deep copy creates a new object and recursively copies all of the fields of the original object to the new object, including any nested objects.
+Both the fields of primitive types and reference types are copied, creating new instances of objects instead of copying references.
+Changes made to the fields of the copied object do not affect the original object, and vice versa, as they are completely independent.
+Deep copy ensures true independence between the original and copied objects but may be more complex and slower than shallow copy, especially for objects with complex nested structures or circular references.
+
+12) Java Call by reference or Call by value
+Answer: 
+In Java, arguments are always passed by value, not by reference. This means that when you pass a variable to a method in Java, a copy of the value of the variable is passed to the method, rather than a reference to the variable itself.
+
+Primitive Types: When you pass a primitive type (such as int, double, boolean, etc.) to a method, a copy of the value of the variable is passed to the method. Changes made to the parameter inside the method do not affect the original variable outside the method.
+
+Reference Types: When you pass a reference type (such as objects, arrays, etc.) to a method, a copy of the reference to the object is passed to the method, not the actual object itself. This means that changes made to the object's state (e.g., modifying the contents of an array or changing the state of an object) inside the method will affect the original object outside the method. However, reassigning the reference inside the method to point to a new object will not affect the original reference outside the method.
+
+Example:
+class MyClass {
+    int value;
+
+    MyClass(int value) {
+        this.value = value;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        int num = 10;
+        MyClass obj = new MyClass(20);
+
+        modifyValues(num, obj);
+
+        System.out.println("After modification:");
+        System.out.println("num: " + num); // Output: num: 10 (unchanged)
+        System.out.println("obj.value: " + obj.value); // Output: obj.value: 30 (changed)
+    }
+
+    static void modifyValues(int num, MyClass obj) {
+        num = 50; // Changes to 'num' do not affect the original variable outside the method
+        obj.value = 30; // Changes to 'obj.value' affect the original object outside the method
+    }
+}
+
+13) Enum and Constant. which should be use?
+Advantages of enums over constants:
+Type Safety: Enums provide type safety, ensuring that only valid values defined within the enum can be assigned. This prevents accidental assignment of incorrect values.
+Readability: Enums enhance code readability by providing self-documenting and descriptive names for values. This makes the code easier to understand and maintain.
+Compile-time Checking: Enums are checked at compile time, ensuring that all possible values are handled correctly. This reduces the likelihood of runtime errors related to incorrect constant values.
+Iteration and Switch Statements: Enums support iteration over their values and can be used in switch statements, making code more concise and expressive.
+
+Example of using enums:
+enum Day {
+    SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY
+}
+// Usage of enum
+Day today = Day.MONDAY;
+System.out.println("Today is: " + today);
+
+Advantages of constants over enums:
+Performance: Constants may offer better performance compared to enums in certain scenarios, especially when dealing with primitive types.
+Simple Constants: For simple constants that do not require type safety or descriptive names, using constants may be more appropriate and less verbose.
+
+Example of using constants:
+public class Constants {
+    public static final int RED = 1;
+    public static final int GREEN = 2;
+    public static final int BLUE = 3;
+}
+
+// Usage of constants
+int color = Constants.RED;
+System.out.println("Color code: " + color);
+
+14) Heap and Stack Memory
+Heap and stack memory are two main memory areas managed by the Java Virtual Machine (JVM).
+
+Heap Memory:
+Heap memory is used for dynamic memory allocation of objects and data structures in Java.
+Objects created using the new keyword are allocated memory on the heap.
+Heap memory is shared among all threads in a Java application.
+Memory allocated on the heap persists beyond the scope of methods and can be accessed from multiple parts of the program.
+Memory management in the heap is handled by the garbage collector, which automatically deallocates memory for objects that are no longer referenced.
+The size of heap memory can be adjusted using JVM options like -Xms (initial heap size) and -Xmx (maximum heap size).
+
+Stack Memory:
+Stack memory is used for static memory allocation of method frames and local variables.
+Each thread in a Java application has its own stack memory.
+Method frames are pushed onto the stack when a method is invoked and popped off when the method returns.
+Local variables declared within a method are stored on the stack and are removed when the method execution is completed.
+Stack memory is limited in size and has a fixed memory allocation per thread.
+Stack memory is faster to access than heap memory because it is allocated in contiguous blocks.
+
+15) What is autoboxing and unboxing in Java, and how do they work?
+Autoboxing:
+Autoboxing is the automatic conversion of primitive data types to their corresponding wrapper classes.
+When a primitive data type is used in a context where an object of its wrapper class is expected, the Java compiler automatically converts the primitive value to an object of the wrapper class.
+Example: int primitiveInt = 10;
+Integer wrapperInteger = primitiveInt; // Autoboxing
+
+Unboxing:
+Unboxing is the automatic conversion of wrapper class objects to their corresponding primitive data types.
+When an object of a wrapper class is used in a context where a primitive data type is expected, the Java compiler automatically extracts the primitive value from the object.
+Example of unboxing:
+Integer wrapperInteger = 20;
+int primitiveInt = wrapperInteger; // Unboxing
+
+16) What is the difference between == and equals() method in Java?
+The == operator compares memory addresses for objects and values for primitives, while the equals() method compares the contents or values of objects. Use == for reference comparison and equals() for content comparison.
+
+17) Type Casting
+Answer:
+Type casting in Java is the process of converting one data type into another. There are two types of type casting: implicit casting (also known as widening) and explicit casting (also known as narrowing).
+
+Implicit Casting (Widening):
+Implicit casting occurs when the target data type can accommodate all possible values of the source data type without any risk of losing information.
+For example, converting an int to a long or a float to a double.
+Implicit casting is done automatically by the compiler and does not require any explicit syntax.
+Example of implicit casting:
+int x = 10;
+long y = x; // Implicit casting from int to long
+
+Explicit Casting (Narrowing):
+Explicit casting occurs when the target data type cannot accommodate all possible values of the source data type, and there is a risk of losing information.
+Explicit casting involves specifying the target data type in parentheses before the value to be cast.
+Explicit casting is required when converting from a larger data type to a smaller data type.
+Example of explicit casting:
+double d = 10.5;
+int i = (int) d; // Explicit casting from double to int
+
+18) Java main() method valid syntax
+Answer: The valid syntaxes for the main method in Java are:
+public static void main(String[] args)
+public static void main(String args[])
+public static void main(String... args)
+
+You can also use `final` keyword with main method.
+
+19) enum class
+In Java, an enum (short for enumeration) is a special data type used to define a collection of named constants. Enumerations are used to represent a fixed set of predefined values, and they provide type safety and readability to the code.
+
+public enum Day {
+    SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY
+}
+
+Enums in Java can also contain fields, methods, and constructors, similar to regular classes. 
+public enum Season {
+    WINTER("Cold"), SPRING("Moderate"), SUMMER("Hot"), FALL("Moderate");
+    
+    private final String description;
+    
+    Season(String description) {
+        this.description = description;
+    }
+    
+    public String getDescription() {
+        return description;
+    }
+}
+
+For Calling -- Season.SPRING.getDescription();
+
+
+################################ Ending If anything missing please let me know ###################################
