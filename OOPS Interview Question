@@ -308,3 +308,8 @@ Downcasting: Downcasting allows you to cast an object from a superclass type to 
 Downcasting can potentially throw a ClassCastException at runtime if the object being referenced is not actually an instance of the subclass. To avoid ClassCastException, it is recommended to use the instanceof operator before performing downcasting.
 
 23) Abstract Class
+24) Interface
+25) Method Hiding
+26) Serialization and Desearilization
+27) Why Serialize UID used?
+28) Can we call Static using Object?
