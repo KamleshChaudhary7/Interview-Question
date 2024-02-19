@@ -308,7 +308,31 @@ Downcasting: Downcasting allows you to cast an object from a superclass type to 
 Downcasting can potentially throw a ClassCastException at runtime if the object being referenced is not actually an instance of the subclass. To avoid ClassCastException, it is recommended to use the instanceof operator before performing downcasting.
 
 23) Abstract Class
+Answer: Abstract class is used for achieve abstraction but not 100% becuase it's also contains concrete method. An abstract class in Java is a class that cannot be instantiated directly and is typically used as a blueprint for other classes.
+Declaration: An abstract class is declared using the abstract keyword in its class definition.
+
+Key Points:
+An abstract class may contain abstract methods (methods without a body) that must be implemented by its subclasses.
+It may also contain concrete methods (methods with a body) that provide default behavior to its subclasses.
+An abstract class can have instance variables, constructors, static methods, and other members like any other class.
+Abstract classes cannot be instantiated using the new keyword because they may contain abstract methods without a body.
+Subclasses of an abstract class must implement all abstract methods or be declared as abstract themselves.
+
+Instantiation: You cannot directly create an object of an abstract class using the new keyword. However, you can create references of an abstract class type.
+
+Constructor: An abstract class can have constructors, which are used to initialize instance variables and perform other initialization tasks. However, since abstract classes cannot be instantiated directly, their constructors are typically used by subclasses during object creation through constructor chaining.
+
 24) Interface
+Answer:  used to achieve abstraction 100%. An interface in Java is a reference type that defines a set of abstract methods that must be implemented by any class that implements the interface.
+Declaration: An interface is declared using the interface keyword followed by the interface name and a code block containing method declarations. Method declarations in interfaces are by default public and abstract.Therefore, they cannot be declared as static, final, or native.
+Interface variables are implicitly public, static, and final, meaning they are constants and cannot be modified by implementing classes. They must be initialized when declared, and their values cannot be changed. It doesn't have any constructor.
+- It Support Multiple Inheritence. 
+- We Can also achieve loose coupling.
+
+Java 8 Changes:
+
+Java 9 Changes:
+
 25) Method Hiding
 26) Serialization and Desearilization
 27) Why Serialize UID used?
