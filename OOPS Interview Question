@@ -1,0 +1,310 @@
+1) What is Class?
+Answer: A class in Java is a blueprint for creating objects. It defines the properties (fields) and behaviors (methods) that objects of that class will have. Classes encapsulate data and behavior, providing a template for object creation and manipulation. It defines a new data types.
+- Class keyword is used to declared a class.
+
+2) What is Object?
+Answer: An object in Java is an instance of a class, representing a real-world entity with attributes (fields) and behaviors (methods). Objects encapsulate data and behavior, allowing them to interact with other objects and perform actions based on their defined behavior.
+
+3) What is Instance Variable and Instance Method or Class Members?
+Answer: The Data and Method declared within a class is called Instance Variable and Instance Method also known as Class Members.
+
+4) What is Parameter and Argruments?
+Answer: Parameters are variables declared in a method signature. which receive a value when method is called. It's local to method don't have scope outside method.
+Arguments are the values passed to a method during a method call.
+
+5) What is Constructor and Type of it?
+Answer: A constructor in Java is a special type of method that is automatically called when an instance of a class is created. Its primary purpose is to initialize the newly created object and set its initial state.
+
+There are several types of constructors in Java:
+Default Constructor: If a class does not explicitly define any constructors, Java provides a default constructor automatically. It initializes instance variables to their default values (e.g., null for reference types, 0 for numeric types, false for boolean).
+Example:
+public class MyClass {
+    // Default constructor provided by Java
+}
+
+Parameterized Constructor: A constructor with parameters allows you to specify initial values for the instance variables of an object at the time of its creation.
+Example:
+public class Car {
+    private String make;
+    private String model;
+    
+    // Parameterized constructor
+    public Car(String make, String model) {
+        this.make = make;
+        this.model = model;
+    }
+}
+
+Copy Constructor: A copy constructor accepts an object of the same class as a parameter and initializes a new object by copying the values of the instance variables from existing object.
+Example:
+public class Point {
+    private int x;
+    private int y;
+    
+    // Copy constructor
+    public Point(Point other) {
+        this.x = other.x;
+        this.y = other.y;
+    }
+}
+--> A copy constructor in Java can be implemented using either shallow copy or deep copy.
+
+Chained Constructor (or Constructor Overloading): In Java, constructors can call other constructors within the same class using the this() keyword. This allows for constructor overloading and helps in reducing code duplication.
+Example:
+public class Rectangle {
+    private int length;
+    private int width;
+    
+    // Chained constructors
+    public Rectangle() {
+        this(0, 0); // Call parameterized constructor
+    }
+    
+    public Rectangle(int length, int width) {
+        this.length = length;
+        this.width = width;
+    }
+}
+
+6) Copy Constructor vs Clone
+Answer: 
+Copy Constructor:
+1) No interface implementation required.
+2) Offers flexibility for implementing custom copy logic, including deep or shallow copy.
+3) Allows direct assignment to final fields in the copied object.
+4) Provides precise control over copying behavior.
+
+clone() Method:
+1) Requires implementing the Cloneable interface.
+2) Limited to shallow copy by default, must override for deep copy.
+3) Cannot directly modify final fields in the cloned object.
+4) Provides built-in support for cloning, but less flexible for custom logic.
+
+7)  What are the main pillars of OOPs Concepts? Explain the OOPS Concepts?
+Answer :
+Encapsulation: Bundling data (attributes) and methods (behaviors) into a single unit (object).
+Technical Implementation: Bean class is an example of Encapsulation. We declare properties as private and provide public getter and setter methods for each variable.
+Real Life Example: Capsule is the perfect example of encapsulation. The capsule has different types of small tablets inside a wrapper. 
+
+Inheritance: Allowing a class to inherit properties and behaviors from another class.
+Technical Implementation: You can implement inheritance using extends and implementation keywords. If you are extending another class then you have to use extends keyword and If you implement the interface then you have to use the implement keyword.
+Real-Life Example: Say suppose your grandfather has agricultural land, farmhouse and your father has flat, some gold and shares and you have racer bike, iPhone and laptop. Ultimately whatever property your grandfathers have will be inherited to your dad and your dad’s property inherited to you. But remember reverse is not possible. 
+
+
+Polymorphism: The ability of objects to take on different forms or behaviors /  one name different form.
+An entity can have different behaviour in different situations. 
+Technical Implementation: Polymorphism can be implemented by using Method overloading and method overriding.
+Real-Life Example: A person can have a different role at a time with a different location or context. The person can be a father in the home, the person can be a manager in the company, Person can be a dancer in the movie. 
+
+Abstraction: Abstraction means hiding the implementation. 
+Technical Implementation: Abstract class and Interface implements the abstraction. An abstract class is partial abstraction because abstract class can have concrete methods as well as abstract methods and the interface is full abstraction because the interface contained only abstract methods, not concrete methods.
+
+8) How does an interface maintain full abstraction even after the introduction of default methods, private methods, and static methods in Java 8?
+Answer : Interfaces in Java achieve full abstraction despite the inclusion of default methods, private methods, and static methods introduced in Java 8. Default methods provide optional implementations, private methods are hidden from implementing classes, and static methods are utility methods unrelated to instance behavior, ensuring that interfaces still abstract away implementation details while providing additional flexibility and utility.
+
+9) What is Method Overloading?
+Answer: Two or more methods with the same name in a class, but with different parameters like must be differ in type or no. of parameters. overloaded methods can have different access modifiers.
+Method overloading demonstrates compile-time polymorphism, also known as static polymorphism. This is because the decision on which overloaded method to call is made by the compiler at compile time, based on the method signature.
+
+10) What is Method Overriding?
+Answer: When a method in a subclass has the same name, parameter list, and return type as a method in its superclass, it is said to override the superclass method. 
+Method overriding is a form of runtime polymorphism, also known as dynamic polymorphism, because the method to be invoked is determined at runtime based on the actual object type.
+
+Method overriding in Java has limitations:
+- Access modifier must be same or less restrictive.
+- Final, Static and Private methods cannot be overridden.
+- Expection Rules:
+  1) If SuperClass does not declare an exception, then the SubClass can only declare unchecked exceptions, but not the checked exceptions.
+  2) If SuperClass declares an exception, then the SubClass can only declare the same or child exceptions of the exception declared by the SuperClass and any new Runtime Exceptions,     
+     just not any new checked exceptions at the same level or higher.
+  3) If SuperClass declares an exception, then the SubClass can declare without exception.
+
+We can also change the return type of method for overriden method after JAVA 5.
+
+11) Dynamic Method Dispatch?
+Answer: Dynamic method dispatch is a mechanism where the method to be executed is determined at runtime based on the actual type of the object being referenced, rather than the reference type.
+
+When a method is invoked on an object using a reference variable, the JVM checks the reference type (the declared type of the reference variable) to determine which method to invoke.
+If the method is overridden in a subclass, the JVM checks the actual type of the object (the type of the object that the reference variable is pointing to) to determine which implementation of the method to execute.
+
+12) Garbage Collection
+Answer: Garbage collection is process to releasing unused memory occupied by unused Object. JVM automatically reclaims memory occupied by unused objects. It uses algorithms like mark and sweep to identify and reclaim memory.
+
+The most common garbage collection algorithm used in Java is the mark and sweep algorithm. 
+This algorithm involves two phases:
+Marking phase: The garbage collector traverses all reachable objects starting from a set of root objects (such as objects referenced by threads, static variables, and local variables) and marks them as reachable.
+Sweeping phase: The garbage collector scans the entire heap and reclaims memory from objects that are not marked as reachable (i.e., garbage).
+
+Objects in Java become eligible for garbage collection when there is no refrence to an object. This can happen when references are set to null, go out of scope, or are reassigned. also annonymous object using anonymous class.
+
+You can request the garbage collector to run using the System.gc() method. However, it's important to note that calling System.gc() only suggests to the JVM that it's a good time to run the garbage collector, but it doesn't guarantee that the garbage collector will actually run immediately.
+The decision to run the garbage collector ultimately lies with the JVM, and it may choose to ignore the request for various reasons such as system load, memory pressure, or internal optimization strategies.
+
+13) Finalize() Method 
+Answer: The finalize() method in Java is used for cleanup actions before an object memory is reclaimed by the garbage collector. It's deprecated since Java 9 due to uncertainty in its invocation timing and performance impact. It's not recommended for critical resource cleanup, and alternatives like try-with-resources are preferred.
+
+14) this Keyword
+Answer: The this keyword in Java refers to the current object instance. It's used to access instance variables, invoke methods, invoke current class constructor, constructor channing and differentiate between instance variables and local variable with the same name. It cannot be used in a static context. Also used in synchronized block to lock the particular object.
+
+15) final Keyword
+Answer: 
+Variable: Declares a constant variable that cannot be reassigned. If it's not initialized at the point of declaration, it must be initialized in constructors of the class.
+Method: Prevents method overriding by subclasses.
+Class: Prevents class inheritance, making the class final and unable to be subclassed.
+
+16) Static Keyword 
+Answer: The static keyword in Java is mainly used for memory management. The static keyword in Java is used to share the same variable or method of a given class. The users can apply static keywords with variables, methods, blocks, and nested classes. The static keyword belongs to the class than an instance of the class. The static keyword is used for a constant variable or a method that is the same for every instance of a class.
+- Static variables : When a variable is declared as static, then a single copy of the variable is created and shared among all objects at the class level. static block and static variables are executed in the order they are present in a program.
+- Static methods : When a method is declared with the static keyword, it is known as the static method
+  Restriction : They can only directly call other static methods. They can only directly access static data. They cannot refer to this or super in any way.
+- Static blocks : in order to initialize your static variables, you can declare a static block that gets executed exactly once, when the class is first loaded. It's called before constructor.
+
+Static Final Blank variable : If it's not initialized at the point of declaration, it must be initialized in static block of the class.
+
+17) Static Binding vs Dynamic Binding
+Static Binding (Early Binding):
+Also known as compile-time binding or early binding.
+The determination of which method to call is done at compile time based on the reference type (or declared type) of the object.
+Static binding occurs for methods that are private, final, static, or static methods called with the class name.
+The main advantage of static binding is performance because the method resolution is done at compile time, which is faster.
+Example: Method calls to private, final, or static methods.
+
+Dynamic Binding (Late Binding):
+Also known as runtime binding or late binding.
+The determination of which method to call is done at runtime based on the actual type of the object.
+Dynamic binding occurs for non-private, non-final, and non-static methods.
+Dynamic binding allows for polymorphic behavior, where the same method call may produce different results depending on the actual type of the object.
+The main advantage of dynamic binding is flexibility because the method resolution is deferred until runtime, allowing for method overriding and polymorphism.
+Example: Method calls to overridden methods in subclasses.
+
+18) What is Inheritance and Type of Inheritence.
+Answer: Inheritance in Java allows a new class to inherit attributes and methods from an existing class. inherites all non-private member including fields and methods. IS_A Relationship.
+Beneficts : Code Resuability, Polymorphism Allowed by Method Overriding.
+Drawback : Tightly Coupled - Because any change in the SuperClass it will also affect all the child class.
+
+There are different types of inheritance:
+Single Inheritance: A subclass inherits from only one superclass. 
+Multiple Inheritance: A subclass inherits from multiple superclasses. Java does not support multiple inheritance for classes, but it supports multiple inheritance through interfaces.
+Multilevel Inheritance: A subclass inherits from another subclass, that also inherite another class.
+Hierarchical Inheritance: Multiple subclasses inherit from a single superclass.
+
+In Java, single inheritance for classes and multiple inheritance through interfaces are supported.
+
+19) Why doesn't Java allow multiple inheritance through classes? 
+Answer : Multiple Inheritance is not supported to remove ambiguity and to provide more maintainable and clear design. 
+Ambiguity around the Diamond problem, consider a class A has foo() method and then B and C derived from A and has their own foo() implementation, and now class D derives from B and C using multiple inheritance and if we refer just foo() compiler will not be able to decide which foo() it should invoke. This is called as the Diamond problem.
+
+Another reason multiple inheritances does complicate the design and creates problem during casting, constructor chaining etc and given that there are not many scenarios on which you need multiple inheritances its wise decision to omit it for the sake of simplicity. 
+1) Multiple inheritance can create problems during casting because of the potential for ambiguity in determining the correct superclass from which to cast. 
+Example:  In this example, when we attempt to cast child to Parent1 and call method1(), there's ambiguity about whether method1() should be called from Parent1 directly or through Child. This ambiguity is a source of confusion and potential runtime errors.
+class Parent1 {
+    void method1() {
+        System.out.println("Parent1 method");
+    }
+}
+
+class Parent2 {
+    void method2() {
+        System.out.println("Parent2 method");
+    }
+}
+
+class Child extends Parent1, Parent2 {
+    // Child class methods and attributes
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Child child = new Child();
+        ((Parent1) child).method1(); // Which method1() to call?
+    }
+}
+2) Multiple inheritance can create problems during constructor chaining when a class inherits from multiple superclasses, each with its own constructor. This can lead to ambiguity about which superclass constructor should be called first and how constructor arguments should be passed.
+Example: In this example, the Child class needs to call constructors from both Parent1 and Parent2. However, since Java does not support multiple inheritance through classes, it's unclear which superclass constructor should be called first in the Child constructor.
+class Parent1 {
+    Parent1() {
+        System.out.println("Parent1 constructor");
+    }
+}
+
+class Parent2 {
+    Parent2() {
+        System.out.println("Parent2 constructor");
+    }
+}
+
+class Child extends Parent1, Parent2 {
+    Child() {
+        // Which superclass constructor to call first?
+    }
+}
+
+20) Super Keyword
+Answer: The super keyword in Java is used to refer to the immediate superclass of child class.
+-To access members os super class using super.memberName, call super class constructors using super(parameters), or invoke super class methods from within a subclass using super.methodName().
+- It's first line in constructor calling. super() and this() cannot use together. 
+
+21) Association, Aggregation, Composite
+Answer: Association:
+Association is a relationship between two classes that establishes a through their objects.
+It can be a one-to-one, one-to-many, many-to-one, or many-to-many relationship.
+Objects of one class have a reference to objects of another class, but there is no ownership or containment implied.
+Example: A Driver class is associated with a Car class a Car class is associated with a Driver class through a driver instance variable. The Car class has a reference to a Driver object, but there is no ownership implied.
+class Car {
+    private Driver driver;
+
+    public void setDriver(Driver driver) {
+        this.driver = driver;
+    }
+}
+
+class Driver {
+    // Driver class implementation
+}
+
+Aggregation:
+Aggregation is a special form of association that represents a "has-a" relationship between two classes.
+It implies that one class (the whole) contains or owns objects of another class (the part).
+The contained objects have an independent lifecycle, and they can exist without the containing object.
+Example: A Department class is aggregated with Employee class instances. a Department class aggregates Employee objects using a list. The Department "has-a" collection of Employee objects, and the Employee objects have an independent lifecycle.
+class Department {
+    private List<Employee> employees;
+
+    public Department() {
+        this.employees = new ArrayList<>();
+    }
+
+    public void addEmployee(Employee employee) {
+        this.employees.add(employee);
+    }
+}
+
+class Employee {
+    // Employee class implementation
+}
+
+Composition:
+Composition is a stronger form of aggregation where the contained objects are part of the containing object's lifecycle.
+It represents a "owns-a" relationship, where the contained objects cannot exist without the containing object.
+When the containing object is destroyed, all contained objects are also destroyed.
+Example: A House class is composed of Room class instances. a House class is composed of a Room class instance. The House "owns" the Room, and the Room cannot exist without the House. When the House is destroyed, the Room is also destroyed.
+class House {
+    private Room room;
+
+    public House() {
+        this.room = new Room();
+    }
+}
+
+class Room {
+    // Room class implementation
+}
+
+22) InstanceOf operator
+Answer: The instanceof operator in Java is used to check whether an object is an instance of a specific class or interface. It returns true if the object is an instance of the specified type, otherwise it returns false. If object is null then return false.
+
+Upcasting: Upcasting allows you to hold an object of a subclass in a reference variable of its superclass type.
+Downcasting: Downcasting allows you to cast an object from a superclass type to a subclass type. It allows you to hold an object of a subclass in a reference variable of its superclass type. 
+Downcasting can potentially throw a ClassCastException at runtime if the object being referenced is not actually an instance of the subclass. To avoid ClassCastException, it is recommended to use the instanceof operator before performing downcasting.
+
+23) Abstract Class
