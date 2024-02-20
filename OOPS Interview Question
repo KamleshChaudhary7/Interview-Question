@@ -329,11 +329,225 @@ Interface variables are implicitly public, static, and final, meaning they are c
 - It Support Multiple Inheritence. 
 - We Can also achieve loose coupling.
 
+For Classes -> implements keyword   For Interfaces -> extends keyword
+
 Java 8 Changes:
+Default method:
+Default methods were introduced in Java to address the issue of evolving interfaces without breaking existing implementations. Prior to Java 8, adding a new method to an existing interface would require modifying all implementing classes to provide an implementation for the new method, which could be impractical or lead to a significant amount of code changes.
+
+By introducing default methods in Java 8, interfaces can now provide default implementations for methods. This means that implementing classes automatically inherit the default implementation, but they have the option to override it if needed. Default methods allow interfaces to evolve over time by adding new methods without requiring changes to existing implementing classes.
+
+Default methods are particularly useful for extending existing interfaces in backward-compatible ways, providing new functionality without breaking existing code. They also enable the creation of more flexible and expressive APIs, promoting code reuse and maintainability. Overall, default methods enhance the flexibility and evolution of interfaces in Java.
+These methods have the default keyword.
+
+Example:
+interface MyInterface {
+    // Default method
+    default void defaultMethod() {
+        System.out.println("Default method in MyInterface");
+    }
+}
+class MyClass implements MyInterface {
+    // Implementing class
+}
+public class Main {
+    public static void main(String[] args) {
+        // Create an instance of MyClass
+        MyClass obj = new MyClass();
+        
+        // Call the default method
+        obj.defaultMethod(); // Output: Default method in MyInterface
+    }
+}
+
+Static method:
+Static methods in Java interfaces were introduced to provide utility methods that are not tied to any specific instance of the interface. They allow for code organization, encapsulation of common functionality, code reusability, and convenient access to utility methods related to the interface.
+
+Example:
+interface MyInterface {
+    // Static method
+    static void myStaticMethod() {
+        System.out.println("Static method in MyInterface");
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        // Call the static method using the interface name
+        MyInterface.myStaticMethod(); // Output: Static method in MyInterface
+    }
+}
 
 Java 9 Changes:
+Private Method: 
+Private methods in Java interfaces were introduced to encapsulate common functionality within interfaces, promoting code reuse and modularity. They are declared using the private modifier and can only be accessed within the interface itself, enhancing encapsulation and hiding implementation details.
 
-25) Method Hiding
-26) Serialization and Desearilization
-27) Why Serialize UID used?
-28) Can we call Static using Object?
+Example:
+interface MyInterface {
+    default void myDefaultMethod() {
+        // Call private helper method
+        int result = calculate(5);
+        System.out.println("Result: " + result);
+    }    
+    private int calculate(int value) {
+        // Private helper method
+        return value * 2;
+    }
+}
+
+25) How would you handle a situation where a class implements two interfaces, each of which declares a default method with the same signature?
+Answer: 
+if a class implements two interfaces that both have a default method with the same signature, the implementing class must provide its own implementation for that method to resolve the conflict. If the implementing class wants to use the default implementation from one of the interfaces, it can explicitly call that interface's default method using the interface name followed by the super keyword.
+
+Example:
+interface Interface1 {
+    default void myMethod() {
+        System.out.println("Default method from Interface1");
+    }
+}
+
+interface Interface2 {
+    default void myMethod() {
+        System.out.println("Default method from Interface2");
+    }
+}
+
+class MyClass implements Interface1, Interface2 {
+    // Provide implementation for myMethod to resolve the conflict
+    @Override
+    public void myMethod() {
+        // Call the default method from Interface1
+        Interface1.super.myMethod();
+        // Interface2.super.myMethod();
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        MyClass obj = new MyClass();
+        obj.myMethod(); // Output: Default method from Interface1
+    }
+}
+
+26) Method Hiding
+Answer: Method hiding in Java occurs when a subclass defines a static method with the same signature as a static method in its superclass. This hides the superclass method, effectively preventing it from being overridden in subclasses.
+
+27) Is it possible to call a static method using an object reference in Java?
+Answer : Yes, static methods can be called using an object reference in Java, but it is considered bad practice and can be confusing because static methods belong to the class itself, not to individual instances of the class.
+
+28) Serialization and Desearilization
+Answer:
+Serialization / Marshalling: Serialization is the process of converting an object into a sequence of bytes that can be easily stored, transmitted, or persisted. In Java, serialization is achieved by implementing the Serializable interface. This interface does not contain any methods; it serves as a marker interface to indicate that the objects of the implementing class can be serialized.
+-- Use ObjectOutputStream to write objects state to an output stream. The writeObject() method of ObjectOutputStream to serialize the object.
+
+Deserialization / De-Marshalling: Deserialization is the process of reconstructing an object from the byte stream created during serialization. In Java, deserialization is achieved using the ObjectInputStream class, which reads bytes from an input stream and reconstructs the object from those bytes. The readObject() method of ObjectInputStream to deserialize the object.
+
+29) Transient keyword
+Answer :  The transient keyword is used to mark a field as non-serializable or it will never serialized data & save the state. When an object is serialized, fields marked as transient are not included in the serialization process. This is commonly used for sensitive data or non-essential fields that do not need to be persisted.
+
+At the time of deserialization transient fields will be initialized with their default values (e.g., null for reference types, 0 for numeric types).
+
+Static Field --> static fields are not serialized when an object is serialized. because it belongs to class not to any indivisual instance.
+Static fields in Java are initialized when the class is loaded into memory, and their values are not saved or restored during serialization or deserialization. Therefore, when an object is deserialized, static fields will retain the values that were assigned to them when the class was loaded into memory. If no value was explicitly assigned, static fields will have their default values (e.g., 0 for numeric types, null for reference types).
+
+static transient --> together the static keyword will govern the the behaviour of variable. so no use of transient.
+
+final Field --> When an object is serialized, only the object's state (non-transient fields) is serialized, and final variables are considered part of the object's state. However, the value of a final variable is included in the serialized object only if it was assigned a value before serialization.
+
+transient final : final variables are directly serialized by their values, so there is no use/impact of declaring final variable as transient.
+
+30) Use of serialVersionUID?
+Answer : The serialVersionUID is a unique identifier for a serializable class. It is a special static field that serves as a version control mechanism to ensure that the serialized and deserialized objects are compatible in terms of their class definition.
+
+Here's how serialVersionUID is used:
+Versioning: When an object is serialized, the serialVersionUID is also written to the serialized data. During deserialization, the JVM compares the serialVersionUID of the serialized object with the serialVersionUID of the locally loaded class. If they match, deserialization proceeds successfully; otherwise, an InvalidClassException is thrown.
+
+Compatibility: If changes are made to the class definition (e.g., adding or removing fields or methods) after objects have been serialized, the serialVersionUID can be explicitly declared to maintain compatibility with previously serialized objects. By specifying a serialVersionUID, you can control the versioning of your serialized objects and ensure that they can be deserialized correctly.
+
+Here's what happens if you don't provide a serialVersionUID:
+If you don't explicitly provide a serialVersionUID in a serializable class, Java will automatically generate one based on the class definition, including its fields, methods, and other aspects. This auto-generated serialVersionUID is based on the structure of the class, and it can change if the class definition changes.
+Compatibility Issues: If the class definition changes between serialization and deserialization (e.g., fields are added, removed, or modified), the automatically generated serialVersionUID may change. This can result in compatibility issues when attempting to deserialize objects serialized with an older version of the class. It leads to throw an execption InvalidClassException.
+
+31) Exception handling
+Answer: Exception handling in Java is a mechanism used to handle runtime errors or exceptional conditions that may occur during the execution of a program. 
+Exception is a condition that occurs during the program execution and lead to program termination abnormally.
+Using Exception Handling we can avoid program termination & continue the execution skipping execption ccode.
+
+Exception Hierarchy: Java provides a hierarchy of exception classes, with Throwable as the root class. Exceptions are categorized into two main types: Error (unrecoverable system errors) and Exception (recoverable application errors).
+
+Exception Types:
+Error: An Error in Java represents serious problems that a reasonable application should not try to catch. They are typically external to the application, such as system errors or internal JVM failures, and are not meant to be caught or handled by regular application code. Handling errors in Java is not recommended.
+
+Checked Exceptions: These are exceptions that are checked at compile-time. This means that the compiler ensures that they are either caught and handled using a try-catch block, or declared in the method's signature using the throws keyword. Examples IOException, SQLException, and ClassNotFoundException.
+
+Unchecked Exceptions (Runtime Exceptions): These are exceptions that are not checked at compile-time. They can occur at runtime and do not need to be explicitly caught or declared. Examples NullPointerException, ArrayIndexOutOfBoundsException, and ArithmeticException. We can handle using try and catch block.
+
+Try Block: This block encloses the code that may throw an exception. It is followed by one or more catch blocks.
+Catch Block: Each catch block is used to handle a specific type of exception. It contains the code that executes when the corresponding exception is thrown. more than one catch block present. catch should be ordered in the form of most specific to most general Exception. otherwise Compiler Error.
+Finally Block: This block is optional and is used to execute cleanup code that should always run, regardless of whether an exception is thrown or caught.
+-- in Java, a try block can be used without a corresponding catch block if it is followed by a finally block.
+
+Finally Block not executed in below cases:
+The program exits via System.exit().
+The code enters an infinite loop or encounters a deadlock.
+The thread executing the try block is interrupted before reaching the finally block.
+
+throw: The throw keyword is used to explicitly throw an exception within a method.
+throws: The throws keyword is used in the method signature to declare that a method may throw a particular type of exception. It specifies the types of exceptions that a method can potentially throw, but it does not handle the exceptions itself. Instead, it indicates that the method will not handle the exceptions locally and will propagate them to its caller.
+
+Exception Propagation: if an exception occurs within a method and is not handled locally (i.e., with a try-catch block), the exception is propagated to the calling method. This propagation continues up the call stack until the exception is either caught and handled by a try-catch block or until it reaches the top-level of the program.
+If the exception is not caught and handled by any method along the call stack, it will eventually reach the default exception handler provided by the Java Virtual Machine (JVM). In this case, the default handler typically prints the exception stack trace and terminates the program.
+
+Java 7: introduced multi-catch exception handling, allowing a single catch block to handle multiple types of exceptions simultaneously. This reduces code duplication and improves readability.
+
+32) Try with Resources -- Automatic Resource Management 
+Answer: 
+Before Java 7, resource management in Java required explicit finally blocks to ensure resources were properly closed after use. This approach was error-prone and could lead to resource leaks if developers forgot to close resources in the finally block.
+
+Example: 
+public class ResourceManagementBeforeJava7 {
+    public static void main(String[] args) {
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader("example.txt"));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException e) {
+                System.err.println("Error closing reader: " + e.getMessage());
+            }
+        }
+    }
+}
+
+Java 7 introduced the "try-with-resources" statement, which simplified resource management by automatically closing resources at the end of the try block, regardless of whether an exception occurred. This feature reduced boilerplate code and made resource management more concise and readable.
+
+1) All objects managed by a try with resources statement must implement the AutoCloseable interface.
+2) Multiple AutoCloseable objects can be created within Java’s try with resources block.
+3) Objects declared in a try with resources statement have scope within the try block, but not the catch and finally blocks.
+4) The close() method of objects declared in a try with resources block is invoked regardless of whether an exception is thrown during execution. it will be called before catch and finally block.
+5) If an exception is thrown in the close() method, it may get categorized as a suppressed exception. when try and close() method both have throw an exception the exception suppressed. we can get using getSupperessed() method.
+6) When resource closed it will be followed reverse order due to avoid dependency.
+Example:
+public class TryWithResourcesJava7 {
+    public static void main(String[] args) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("example.txt"));) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+        }
+    }
+}
+
+Java 9 :-- You can use try block with refernce of object - Remove limitation of declaring object inside try paranthesis.
+You can use Like try(br){}
