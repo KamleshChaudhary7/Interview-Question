@@ -1,1 +1,86 @@
+1) What are collections in Java?
+Answer: Collections Framework represents a hierarchy of interfaces and classes used to manipulate groups of objects.  It provides interfaces like Collection, List, Set, Queue, and Map, along with their corresponding implementations such as ArrayList, HashSet, LinkedList, and HashMap. Also Java Collections Framework refers to an object that gathers multiple elements into a single unit.
+Internally, the Java Collections Framework uses primitive data structures like arrays and core data structures such as linked lists, hash tables, trees, and various other data structures to implement the different collection interfaces and classes. 
 
+2) Collections Framework hierarchy
+Answer: 
+Collection: This is the root interface in the collections hierarchy. It represents a group of objects known as elements. Implementations of this interface include List, Set, and Queue.
+
+List: This interface represents an ordered collection of elements where each element has an index. Implementations include ArrayList, LinkedList, and Vector.
+
+Set: This interface represents a collection that contains no duplicate elements. Implementations include HashSet, LinkedHashSet, and TreeSet.
+
+Queue: This interface represents a collection designed for holding elements prior to processing. Implementations include LinkedList and PriorityQueue.
+
+Map: This interface represents a mapping between keys and values. Implementations include HashMap, LinkedHashMap, TreeMap, and Hashtable.
+
+3) What is the difference between Collection and Collections in Java?
+Answer: Collection is an interface that represents a single group of objects, while Collections is a utility class that provides various static methods for manipulating collections.
+
+4) List Interface
+Answer: The List interface in Java represents an ordered collection of elements where each element has an index. It allows duplicate elements and maintains the insertion order of elements. Provides methods for accessing, adding, removing, and manipulating elements by index.
+
+5) Internally Working of ArrayList.
+Answer: Ordered
+ArrayList works on the principle of creating a array and adding elements to it. So basically it internally just creates and array and adds elements to it. Remember, in case of array the size of the array has to be defined during its creation.
+Integer [] array = new Integer[10];
+
+Now when we intialize ArrayList list = new ArrayList();
+-- ArrayList internally uses an array to store elements. Initially, it starts with a default capacity (typically 10) and allocates an array of that size. ArrayList class has a member variable elementData which is a Object of array Object[] elementData;
+
+Adding Elements: add(E element)
+When a new element is added the capacity of the array elementData is checked and if it is completely filled that is all element 10 are filled, a new array is created with a new capacity by using Arrays.copyOf. If the elementData array is not exhausted the new element is added in the array.
+So adding a element in a array may take more time as a completely new array needs to be created with greater capacity and the data in the old array is transferred into the new array.
+Arrays.copyof(elementData, newCapicity);
+
+When using the add(int index, E element) method in an ArrayList, if the specified index is within the current size of the list, and index is vacant then element is directly added. if already element prresent at that next then the new element is inserted at the specified index,  and all subsequent elements are shifted to the right to accommodate the new element. if index more than current size then a new array is created with the index kept vacant and element insert on that index.
+
+Accessing Elements: get(int index) Elements in the ArrayList can be accessed by their index, similar to a regular array. It directly retrieves the element from the internal array based on the index.
+
+Key Points:
+1) Manipulation can be slow due to shifting when elements are inserted or removed at specific indices.
+2) ArrayList is not synchronized, so it's not thread-safe for concurrent access.
+3) It may contain duplicate values and allow null elements.
+4) ArrayList dynamically increases its capacity as needed.
+5) Internally, it uses an array and adds elements to it.
+
+Use: Fast access by index, Simple API for basic operations, Dynamic resizing
+Not to Use: Large collections, Frequent insertions or deletions in the middle, Thread safety requirements.
+
+5) Internally Working of Linked List.
+Answer: Ordered
+As opposed to ArrayList, LinkedList does not store elements in a array. Linked List is a actually a collection of objects linked together using a reference to each other. So it used a Doubly Linked List.
+
+Each element in the LinkedList is represented by a node object. Each node contains two references:
+element: Holds the data value of the node.
+next: Reference to the next node in the list.
+previous: Reference to the previous node in the list.
+
+The LinkedList maintains references to the first and last nodes in the list:
+first: Points to the first node (head) in the list.
+last: Points to the last node (tail) in the list.
+
+add(E e) : When adding elements to the LinkedList, new nodes are created to store the data. It check first and last node if it is null then, the first and last pointers are updated to reference the new node. If it is not null, the new node is appended to the end of the list, and the last pointer is updated to point to this new node.
+add(int index, E element): method in LinkedList inserts the specified element at the specified index by adjusting the references of neighboring nodes and updating the list's size. This is not as fast as ArrayList.because it requires traversal from either the beginning or end of the list to reach the specified index.
+
+get(int index): It iterates through the list and returns the element. This is very expensive and time consuming as opposed to ArraList.get(int index)
+
+
+Key Points for Linked List:
+1) Allows null entries.
+2) Not synchronized for thread safety.
+3) Dynamically resizable for efficient insertion and deletion.
+4) Reverse traversal is inefficient.
+5) Fast manipulation due to no shifting of elements.
+
+Use:
+Use linked lists when dynamic resizing and efficient insertion/deletion operations are required.
+They are suitable for scenarios where elements need to be added or removed frequently.
+
+Not to Use: 
+Avoid using linked lists when random access to elements by index is a common requirement.
+Linked lists are not optimal for scenarios that involve a lot of searching or accessing elements by their position in the list.
+If memory overhead is a concern, linked lists may not be the best choice due to their additional memory overhead for storing node references.
+
+6) Map Interface
+Answer: 
