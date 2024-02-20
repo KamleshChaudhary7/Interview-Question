@@ -533,8 +533,10 @@ Java 7 introduced the "try-with-resources" statement, which simplified resource 
 2) Multiple AutoCloseable objects can be created within Java’s try with resources block.
 3) Objects declared in a try with resources statement have scope within the try block, but not the catch and finally blocks.
 4) The close() method of objects declared in a try with resources block is invoked regardless of whether an exception is thrown during execution. it will be called before catch and finally block.
-5) If an exception is thrown in the close() method, it may get categorized as a suppressed exception. when try and close() method both have throw an exception the exception suppressed. we can get using getSupperessed() method.
+5) If an exception is thrown in the close() method, it may get categorized as a suppressed exception. if both the try block and the close method of the resource throw exceptions, the exception thrown by the try block takes precedence, and any exception thrown by the close method is suppressed. we can get using getSupperessed() method.
 6) When resource closed it will be followed reverse order due to avoid dependency.
+Throwable[] suppressedExceptions = e.getSuppressed();
+
 Example:
 public class TryWithResourcesJava7 {
     public static void main(String[] args) {
