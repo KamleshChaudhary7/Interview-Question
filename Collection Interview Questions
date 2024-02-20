@@ -32,6 +32,7 @@ Adding Elements: add(E element)
 When a new element is added the capacity of the array elementData is checked and if it is completely filled that is all element 10 are filled, a new array is created with a new capacity by using Arrays.copyOf. If the elementData array is not exhausted the new element is added in the array.
 So adding a element in a array may take more time as a completely new array needs to be created with greater capacity and the data in the old array is transferred into the new array.
 Arrays.copyof(elementData, newCapicity);
+int newCapacity = oldCapacity + (oldCapacity >> 1); // It is generally oldCapcity + 50% of oldCapcity
 
 When using the add(int index, E element) method in an ArrayList, if the specified index is within the current size of the list, and index is vacant then element is directly added. if already element prresent at that next then the new element is inserted at the specified index,  and all subsequent elements are shifted to the right to accommodate the new element. if index more than current size then a new array is created with the index kept vacant and element insert on that index.
 
@@ -83,4 +84,41 @@ Linked lists are not optimal for scenarios that involve a lot of searching or ac
 If memory overhead is a concern, linked lists may not be the best choice due to their additional memory overhead for storing node references.
 
 6) Map Interface
+Answer: Map interface, data is stored in key-value pairs, where each key is associated with a corresponding value. This association allows for efficient retrieval of values based on their keys.
+Key Points for Map Interface:
+1) Stores key-value pairs.
+2) Does not allow duplicate keys (keys must be unique).
+3) Provides efficient retrieval of values based on keys.
+4) Common implementations include HashMap, TreeMap, LinkedHashMap.
+5) Does not maintain insertion order (except for certain implementations like LinkedHashMap).
+6) Allows null keys and null values (in most implementations).
+7) Methods include put(key, value), get(key), containsKey(key), containsValue(value), remove(key), size(), isEmpty().
+8) Used for various purposes such as caching, data storage, and associative arrays.
+
+7) Internally Working of HashMap.
+Answer: HashMap works on the principal of hashing. It stores values in the form of key-value pair and to access a value you need to provide the key. HashMap is basically use Singly Linked List or a binary tree (in Java 8 and later).
+HashMap implementation is based on the hash table data structure. This HashMap class extends the AbstractMap class that implements the Map interface.
+
+put(Key, Value):
+HashMap has arrays of buckets. each bucket points to a Singly Linked List or a binary tree where the entries (nodes) are stored.
+Internally HashMap uses a hashCode of the key Object and this hashCode is further used by the hash function to find the index of the bucket where the new entry can be added.
+Once the bucket is identified by the hash function using hashcode, then hashCode is used to check if there is already a key with the same hashCode or not in the bucket.
+If there already exists a key with the same hashCode, then the equals() method is used on the keys. If the equals method returns true, that means there is already a node with the same key and hence the value against that key is overwritten in the entry(node), otherwise, a new node is created and added to this Singly Linked List of that bucket.
+If there is no key with the same hashCode in the bucket found by the hash function then the new Node is added to the bucket found.
+
+get(Key):
+When we fetch element first identifies the buckets in which all elements of the same hashcode stored. which is generally identified from Key. After bucket identified we just need match equals() method with Key.
+
+The Intial size of array is 12 which is usable, 16 is capacity and 0.75 is load factor. 
+Whenever the number of entries in the hashmap crosses the threshold value then the bucket size of the hashmap is doubled and rehashing is performed and all already existing entries(nodes) of the map are copied and new entries are added to this increased hashmap.
+Threshold value = Bucket size * Load factor
+
+Before java 8, singly-linked lists were used for storing the nodes. But this implementation has changed to self-balancing BST after a thresold is crossed (static final int TREEIFY_THRESHOLD = 8;). The advatange of this if we are using singly linked list and we have 100's of data in particular bucket now we are adding new element in map it and values is key unique now it need travel all the nodes in the list and add the data at last. so it time consuming which take time is O(n) for lookup. Now if we change it with BTS it will take O(log⁡n) in worst cases scenario. in this case based on the root elements we can go right side and left side for the lookup.
+
+When the number of elements in a bucket exceeds a certain threshold (typically 8), and the size of the array is greater than a certain minimum capacity (usually 64), the bucket is transformed into a tree to improve performance for operations such as lookup, insertion, and deletion. This threshold prevents the overhead of managing a tree structure for small buckets.
+Conversely, when the number of elements in a bucket falls below a certain threshold (typically 6), and the size of the array is greater than a certain minimum capacity (usually 64), the bucket is transformed back into a linked list to conserve memory and simplify operations when the number of elements decreases.
+
+LinkedHashMap :: LinkedHashMap use a doubly linked list that preserves the insertion order of elements
+
+7) Internally Working of TreeMap.
 Answer: 
