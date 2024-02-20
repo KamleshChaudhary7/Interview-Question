@@ -121,4 +121,150 @@ Conversely, when the number of elements in a bucket falls below a certain thresh
 LinkedHashMap :: LinkedHashMap use a doubly linked list that preserves the insertion order of elements
 
 7) Internally Working of TreeMap.
-Answer: 
+Answer: TreeMap is a Red-Black tree-based map implementation.
+Here each node has only two child nodes and the insertion is a tree happens same as the insertion strategy of Java Binary Search Tree. The Tree Map has Key and Value in the node, while the BST only has the value.
+
+The elements added is a TreeMap should implement comparable and provide implementation of compareTo method. On the basis of this TreeMap decides wether the node is smaller or greater than other node. If Comparable is not implemented, a class which is Comparator should be passed in the constructor of TreeMap. If both Comparable and Comparator are present TreeMap uses Comparator implementation.
+TreeMap internally maintains a List of Nodes with each node being a Entry<K,V> class which is actually a implementation of Map.Entry<K,V> interface.
+
+The basic structure of this Entry class is 
+class Entry{
+ K key;
+ V value;
+ Entry left = null;
+ Entry right = null;
+ Entry parent;
+ boolean color = BLACK;
+}
+
+Entry<K,V> of TreeMap has internally three entries of Entry<K,V> class : left,right,parent;
+When we use put(K,V) method it checks if root is pointing anywhere if no it makes the instance of Entry<K,V> and point to root.
+The constructor of Entry<K,V> takes key, value and parent. In this case parent is null.
+For the next time we enter something using put(K,V) it first identifies the comparison mechanism to use. First it check the Comparator class is present or not . This class is passed when creating the instance of TreeMap. If not present it uses the Key's Comparable implementation.
+It then traverse through root and compares each node with the node entered and depending upon the comparison places the node either left or right of the parent node.
+
+Key Points:
+1) Sorted collection based on keys.
+2) Implements SortedMap interface.
+3) Uses Red-Black tree internally.
+4) Provides efficient operations for sorted elements.
+5) Does not allow duplicate keys.
+6) Not thread-safe.
+7) No null keys, but null values are allowed.
+
+8) Internally Working of HashTable.
+Answer: It's same as HashMap. use the HashTable which store the key-value pair. 
+Synchronized: Thread-safe for concurrent access.
+No Nulls: Doesn't allow null keys or values.
+Performance: Synchronization can impact speed.
+Initial Capicity: 11 LoadFactor - 0.75 Size : 8
+
+9) Difference between WeakHashMap, IdentityHashMap, and EnumMap in Java
+WeakHashMap: Uses weak references for keys, allowing them to be garbage collected if there are no strong references to them. Suitable for memory-sensitive caching.
+WeakHashMap is not thread-safe and should be used in single-threaded or carefully synchronized environments
+Example: 
+public class WeakHashMapExample {
+    public static void main(String[] args) {
+        WeakHashMap<String, Integer> weakMap = new WeakHashMap<>();
+        String key = new String("key");
+        weakMap.put(key, 10);
+        System.out.println("WeakHashMap before garbage collection: " + weakMap);
+        // Let's make the key eligible for garbage collection
+        key = null;
+        // Trigger garbage collection
+        System.gc();
+        // Print the WeakHashMap after garbage collection
+        System.out.println("WeakHashMap after garbage collection: " + weakMap);
+    }
+}
+For WeakHashMap, the output may vary depending on when the garbage collector runs. If the key is collected before the map is printed, you may see an empty map or a map without the key-value pair. If the key is not collected, you'll see the map with the key-value pair intact
+
+IdentityHashMap: Uses reference equality (identity) instead of object equality for key comparison. Allows multiple keys that are equal in terms of object equality but have different references.
+Example:
+public class IdentityHashMapExample {
+    public static void main(String[] args) {
+        IdentityHashMap<String, Integer> identityMap = new IdentityHashMap<>();
+        String key1 = new String("key");
+        String key2 = new String("key");
+
+        identityMap.put(key1, 10);
+        identityMap.put(key2, 20);
+
+        System.out.println("IdentityHashMap: " + identityMap);
+    }
+}
+Expected Output: IdentityHashMap: {key=10, key=20}
+
+EnumMap: Specifically designed to be used with enum types as keys. Provides efficient storage and type safety for mappings from enum keys to values.
+Example:
+
+enum Color {
+    RED, GREEN, BLUE
+}
+
+public class EnumMapExample {
+    public static void main(String[] args) {
+        EnumMap<Color, String> enumMap = new EnumMap<>(Color.class);
+
+        enumMap.put(Color.RED, "Red");
+        enumMap.put(Color.GREEN, "Green");
+        enumMap.put(Color.BLUE, "Blue");
+
+        System.out.println("EnumMap: " + enumMap);
+    }
+}
+Expected Output: EnumMap: {RED=Red, GREEN=Green, BLUE=Blue}
+
+10) Diffrence between ConcurrentHashMap, HashTable and synchronizedMap
+ConcurrentHashMap	:
+We will get thread safety without locking the total map object just with a bucket level lock.	
+At a time multiple threads are allowed to operate on map objects safely.	
+Read operation can be performed without lock but write operation can be performed with bucket level lock.	
+While one thread iterating map objects the other thread is allowed to modify the map and won’t get ConcurrentModificationException.	
+Iterator of ConcurrentHashMap is fail-safe and won’t raise ConcurrentModificationException	
+Null is not allowed for both keys and values.	
+
+HashTable:
+We will get thread safety by locking the whole map object
+At a time one thread is allowed to operate on a map object.
+Every read and write operations required total map object 
+While one thread iterating map object the other threads are not allowed to modify the map otherwise we will get ConcurrentModificationException
+Iterator of HashTable is fail-fast and it will raise ConcurrentModificationException
+Null is not allowed for both keys and values.
+
+HashTable and Collections.synchronizedMap(map) has difference that synchronizedMap allows Null for both keys and values	wherever hashtable doesnot allow.
+
+11) Set interface
+Answer : 
+Represents a collection of unique elements.
+Does not allow duplicate elements.
+Implemented by classes such as HashSet, TreeSet, and LinkedHashSet.
+
+Hashset : Non Duplicate, Un-Ordered
+Hashset is a special case
+HashSet internally uses HashMap.
+HashSet has a instance variable called 'map' which is a instance of HashMap.
+add(E element):
+When we add a value in Hashset, Hashset internally adds a value in 'map' by calling put(E,o).
+where E that is the key is the element passed in add(E element) of HashSet and 'o' as the value which is a dummy Object creted by doing Object o = new Object; which is common for all key's entered in HashMap 'map'.
+HashSet internally checks wether the Key that is 'element' is already present by calling the equals method of 'element'.
+This method returns false if the Key is already present in HashMap.
+- Not Synchronized.
+- Best for search operation.
+
+TreeSet : Non Duplicate, Sorted, Not Allow Null
+Like HashSet uses HashMap internally, TreeSet uses TreeMap internally. TreeSet ensures that elements added are not duplicate and they are sorted. Sorting is done using TreeMap.
+add(E element) :
+When we add a value in TreeSet, TreeSet internally adds a value in 'map' by calling put(E,o);
+where E that is the key is the element passed in add(E element) of TreeSetand 'o' as the value which is a dummy Object creted by doing Object o = new Object; which is common for all key's entered in TreeMap 'map'.
+TreeSet internally checks wether the Key that is 'element' is already present by calling the equals method of 'element'.
+This method returns false if the Key is already present in TreeMap.
+
+LinkedHashSet : Non Duplicate, Ordered
+LinkedHashSet extends HashSet that means it is a HashMap without duplicates. But the difference here with HashSet is that LinkedHashSet is ordered.
+It uses a Doubly Linked List that runs through the Set holding the order together.
+- Not Synchronized.
+
+12) Comparator and Comparable
+13) fail-fast and fail-safe
+14) Itertor
