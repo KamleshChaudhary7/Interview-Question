@@ -266,5 +266,101 @@ It uses a Doubly Linked List that runs through the Set holding the order togethe
 - Not Synchronized.
 
 12) Comparator and Comparable
-13) fail-fast and fail-safe
-14) Itertor
+Answer: 
+Comparable Interface:
+The Comparable interface is used to compare different objects of a class based on some parameters or criteria. These criteria form the natural ordering for the class.
+
+For example, consider a student class with three fields - name, GPA, and registration number. Now, let's say that we want to compare two students based on their GPA. This natural ordering of the objects based on GPA can be defined by using the Comparable interface.
+
+To compare the objects of a class with each other, the class must implement the Comparable interface. We then need to define the compare strategy by overriding the compareTo() method. The compareTo() method returns an integer value. This value could be positive, negative, or zero based on the following conditions.
+
+Positive if the calling object is greater.
+Negative if the calling object is smaller.
+0 if both are equal.
+
+Let's continue with the Student class example and try to compare two student objects based on their GPA. We can simply return the difference in the GPA of the calling student object and the student object taken as a parameter. This will return an integer according to the above conditions. The compareTo() method for this scenario is shown below.
+
+@Override
+public int compareTo(Student other)
+{
+	return (int)(this.getGpa() - other.getGpa());
+}
+
+The Collections class has a sort() method which internally uses this overridden compareTo() method of the class to compare the objects and then sort them.
+
+Comparator Interface :
+The Comparator interface is also used to compare objects of a class based on some parameters. But unlike the Comparable interface, the Comparator interface can be used to create multiple classes to compare objects based on the values of different member variables.
+
+For example, if we wish to sort an array of students based on their registration number, their GPA, and also their names, then we can create three different classes that implement the Comparator interface.
+
+Comparable interface, on the other hand, can only create a single compareTo() method which will sort the array based on any one of the members.
+Sometimes we may not have access to the original class and so we cannot create a compareTo() method according to our needs. In these cases, the Comparator interface proves to be very helpful.
+To use the Comparator interface, we need to create a separate class that implements this interface. Then, we must override the compare() method of this interface in our class.
+The compare() method is similar to the compareTo() method of the Comparable interface. It also returns an integer value that follows the same conditions as the compareTo() method.
+Example: Comparator Interface in Java
+Let's create different classes that implement the Comparator interface and override the compare() method.
+Class for For Student GPA:
+class CompareUsingGPA implements Comparator<Student>
+{
+	@Override
+	public int compare(Student s1, Student s2)
+	{
+		return s1.getGpa() - s2.getGpa();
+	}
+}
+The Collections.sort() can take an additional class object that has an overridden compare() method. 
+
+Summary : Comparable and Comparator interfaces are used to compare objects of a class. The Comparable interface is used to set a natural ordering pattern for the class. The Comparator interface is used when we need multiple ways of comparing objects. Comparator is also useful when we don't have access to the original class.
+
+13) fail-fast and fail-safe Iterator
+Answer : Concurrent Modification: Concurrent Modification in programming means to modify an object concurrently when another task is already running over it. For example, in Java to modify a collection when another thread is iterating over it. Some Iterator implementations (including those of all the general purpose collection implementations provided by the JRE) may choose to throw ConcurrentModificationException if this behavior is detected.
+
+Iterators in java are used to iterate over the Collection objects.
+
+Fail-Fast iterators immediately throw ConcurrentModificationException if there is structural modification of the collection. Structural modification means adding, removing any element from collection while a thread is iterating over that collection. Iterator on ArrayList, HashMap classes are some examples of fail-fast Iterator.
+
+Fail-Safe iterators don’t throw any exceptions if a collection is structurally modified while iterating over it. This is because, they operate on the clone of the collection, not on the original collection and that’s why they are called fail-safe iterators. Iterator on CopyOnWriteArrayList, ConcurrentHashMap classes are examples of fail-safe Iterator.
+
+If you remove an element via Iterator remove() method, exception will not be thrown. However, in case of removing via a particular collection remove() method, ConcurrentModificationException will be thrown.
+
+14) Fail-Fast Iterators internal working.
+Answer: Every fail fast collection has a modCount field, to represent how many times the collection has changed/modified.
+So at every modification of this collection we increment the modCount value. For example the modCount is incremented in below cases:
+1. When one or more elements are removed.
+2. When one or more elements are added.
+3. When the collection is replaced with other collection.
+4. When the collection is sorted.
+So everytime there is some change in the collection structure, the mod count is incremented.
+
+Now the iterator stores the modCount value in the initialization as below:
+int expectedModCount = modCount;
+
+Now while the iteration is going on, expectedModCount will have old value of modCount.
+If there is any change made in the collection, the modCOunt will change and then an exception is thrown using:
+if (modCount != expectedModCount)
+    throw new ConcurrentModificationException();
+
+This code is used in most of the iterator methods e.g.
+1. next()
+2. remove()
+3. add()
+
+So if we make any changes to the collection, the modCount will change, and expectedModCount will not be hence equal to the modCount. Then if we use any of the above methods of iterator, the ConcurrentModificationException will be thrown.
+
+Note: If we remove/add the element using the remove() or add() of iterator instead of collection, then in that case no exception will opccur. It is because the remove/add methods of iterators call the remove/add method of collection internally, and also it reasigns the expectedModCount to new modCount value.
+
+14) Iterator , ListIterator and ForEach
+Answer : 
+Iterator:
+Can traverse elements present in Collection only in the forward direction.
+Helps to traverse Map, List and Set.	
+Indexes cannot be obtained by using Iterator.	
+Cannot modify or replace elements present in Collection.
+Cannot add elements and it throws ConcurrentModificationException.	
+Certain methods of Iterator are next(), remove() and hasNext().	
+
+ListIterator:
+Can traverse elements present in Collection both in forward and backward directions.
+Can only traverse List and not the other two.
+It has methods like nextIndex() and previousIndex() to obtain indexes of elements at any time while traversing List.
+We can modify or replace elements with the help of set(E e).Can easily add elements to a collection at any time.Certain methods of ListIterator are next(), previous(), hasNext(), hasPrevious(), add(E e).
