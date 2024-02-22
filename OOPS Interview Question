@@ -324,7 +324,7 @@ Constructor: An abstract class can have constructors, which are used to initiali
 
 24) Interface
 Answer:  used to achieve abstraction 100%. An interface in Java is a reference type that defines a set of abstract methods that must be implemented by any class that implements the interface.
-Declaration: An interface is declared using the interface keyword followed by the interface name and a code block containing method declarations. Method declarations in interfaces are by default public and abstract.Therefore, they cannot be declared as static, final, or native.
+Declaration: An interface is declared using the interface keyword followed by the interface name and a code block containing method declarations. Method declarations in interfaces are by default public and abstract. They cannot be declared as final, or native.
 Interface variables are implicitly public, static, and final, meaning they are constants and cannot be modified by implementing classes. They must be initialized when declared, and their values cannot be changed. It doesn't have any constructor.
 - It Support Multiple Inheritence. 
 - We Can also achieve loose coupling.
