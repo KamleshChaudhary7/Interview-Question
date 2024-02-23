@@ -19,3 +19,117 @@ Ex:
 
 4) @Autowired
 The @Autowired annotation in Spring is used to automatically wire (inject) beans into other beans or components. It helps manage dependencies between Spring beans without the need for explicit configuration.
+
+5) @RestController
+The @RestController annotation is a specialized version of the @Controller annotation in Spring MVC specifically designed for building RESTful web services. It combines the functionality of the @Controller and @ResponseBody annotations into a single annotation, making it convenient for creating RESTful APIs. 
+
+Controller: Like @Controller, @RestController marks a class as a controller in Spring MVC, capable of handling HTTP requests.
+Response Body: Additionally, @RestController automatically serializes the return value of controller methods into JSON or XML response and directly writes it to the HTTP response body. This eliminates the need for @ResponseBody annotation on individual handler methods.
+
+6) @Controller 
+The @Controller annotation in Spring MVC marks a class as a controller component responsible for handling HTTP requests and generating HTTP responses.
+
+Controllers in Spring MVC are responsible for processing user requests, interacting with business logic or services, and returning a view or response to the client.
+
+7) @Controller vs @RestController 
+1. The @Controller is a common annotation that is used to mark a class as Spring MVC Controller while @RestController is a special controller used in RESTFul web services and the equivalent of @Controller + @ResponseBody.
+2. The @RestController is relatively new, added only on Spring 4.0 but @Controller is an old annotation, exists since Spring started supporting annotation, officially it was added on Spring 2.5 version.
+3. The @Controller annotation indicates that the class is a "Controller" like a web controller while @RestController annotation indicates that the class is a controller where @RequestMapping methods assume @ResponseBody semantics by default i.e. servicing REST API.
+4. The @Controller is a specialization of @Component annotation while @RestController is a specialization of @Controller annotation. It is actually a convenience controller annotated with @Controller and @ResponseBody.
+5. One of the key differences between @Controler and @RestCotroller in Spring MVC is that once you mark a class @RestController then every method is written a domain object instead of a view.
+6. Another key difference between @RestController and @Controller is that you don't need to use @ResponseBody on every handler method once you annotate the class with @RestController
+
+8) @ResponseBody
+The @ResponseBody annotation in Spring MVC is used to indicate that the return value of a controller method should be serialized directly to the HTTP response body.
+
+Internally, the @ResponseBody annotation works as follows:
+Handler Mapping: When an HTTP request is received by the Spring MVC framework, it needs to determine which controller method should handle the request. This process is handled by the Handler Mapping mechanism, which maps incoming requests to handler methods.
+Handler Execution: Once the appropriate handler method is identified, Spring MVC invokes the method to process the request. If the method is annotated with @ResponseBody, Spring knows that the return value of the method should be serialized directly to the HTTP response body.
+Message Converter: Spring MVC uses a Message Converter to convert the return value of the handler method to the desired format for the HTTP response body. For example, if the return value is a Java object, the Message Converter serializes it to JSON or XML, depending on the media type specified in the request headers.
+HTTP Response: Finally, the serialized response data is written to the HTTP response body and sent back to the client.
+
+In Spring MVC, the conversion of Java objects to JSON or XML format is handled by implementations of the HttpMessageConverter interface. Specifically, for JSON serialization, the most commonly used implementation is MappingJackson2HttpMessageConverter, which is part of the Jackson project. For XML serialization, MappingJackson2XmlHttpMessageConverter can be used.
+
+Here's a brief overview:
+MappingJackson2HttpMessageConverter: This converter uses the Jackson library to serialize Java objects to JSON format. It converts Java objects to JSON using Jackson's ObjectMapper.
+MappingJackson2XmlHttpMessageConverter: This converter also uses Jackson, but it serializes Java objects to XML format using Jackson's XmlMapper.
+
+9) @RequestMapping
+The @RequestMapping annotation in Spring MVC is used to map web requests to specific handler methods in controller classes. It allows you to define the URL patterns and HTTP methods that a controller method should handle.
+@RequestMapping supports specifying the HTTP methods (GET, POST, PUT, DELETE, etc.) that a controller method should handle. This allows you to create different methods to handle different types of requests.
+
+10) @Component: This annotation is a generic stereotype annotation used to annotate a class as a Spring component. It indicates that the class is a Spring-managed component that may be autodetected through classpath scanning. @Component is a general-purpose annotation and can be used for any class.
+
+11) @Service: This annotation is a specialization of @Component and is used to annotate classes representing services in the business layer of the application. It indicates that the annotated class is a service component and is typically used to encapsulate business logic and transaction management.
+
+12) @Repository: This annotation is also a specialization of @Component and is used to annotate classes representing data access objects (DAOs) or repositories in the persistence layer of the application. It indicates that the annotated class is a repository component responsible for interacting with the database or other data sources.
+
+The @Repository annotation can have a special role when it comes to converting database exceptions to Spring-based unchecked exceptions.
+
+For example, when we work with Hibernate and we do not use a Spring template (e.g. JdbcTemplate) to interact with the database. In this case, if hibernate threw an exception then spring will not convert it to Spring-based exception.
+
+To automatically convert such non-spring exceptions to spring exceptions, we shall annotate Hibernate DAOs with @Repository. This way, PersistenceExceptionTranslationPostProcessor will apply persistence exception translation and converts native resource exceptions to Spring’s DataAccessException hierarchy.
+
+14) Stereotype annotations
+Stereotype annotations in Spring categorize and provide metadata to Spring-managed components. They include @Component for generic components, @Service for business services, @Repository for data access objects, @Controller for web controllers, @Configuration for configuration classes, and @RestController for RESTful controllers.
+
+15) @Qualifier
+The @Qualifier annotation in Spring is used to specify which bean should be injected when there are multiple beans of the same type. It helps resolve ambiguity during autowiring by providing a way to select a specific bean based on its qualifier value or name.
+
+16) @Primary
+The @Primary annotation in Spring designates a default bean to be injected when multiple beans of the same type exist. It simplifies autowiring by providing a default choice if no specific qualifier is provided.
+
+17) @Scope
+The @Scope annotation in Spring is used to specify the lifecycle and visibility of a bean within the application context. It determines whether a bean is a singleton (default) or a prototype (new instance per request), among other options.
+
+18) @Value
+The @Value annotation in Spring is used to inject values from properties files, environment variables, or other Spring beans into fields in Spring-managed components. It allows for externalized configuration and easy access to application properties.
+@Value("${keyName}")
+
+19) @PathVariable
+The @PathVariable annotation in Spring MVC extracts values from URI template variables in request URLs and binds them to method parameters in controller methods.
+Example:
+@GetMapping("/hello/{name}")
+public String sayHello(@PathVariable String name) {
+    return "Hello, " + name + "!";
+}
+
+20) @RequestParam 
+The @RequestParam annotation in Spring MVC binds request parameters from the URL query string or form data to method parameters in controller methods.
+attributes: name, required, defaultValue
+Example: 
+@GetMapping("/hello")
+public String sayHello(@RequestParam String name) {
+    return "Hello, " + name + "!";
+}
+- When a request is made to /hello?name=John, the method responds with "Hello, John!".
+
+21) @RequestBody
+The @RequestBody annotation in Spring MVC binds the content of the HTTP request body to a method parameter in a controller method.
+Using @RequestBody simplifies handling of request bodies in Spring MVC controllers, allowing for seamless mapping of JSON or XML data to Java objects.
+@PostMapping("/users")
+public ResponseEntity<User> createUser(@RequestBody User user) {
+    // Method implementation
+}
+
+22) @ResponseStatus
+The @ResponseStatus annotation in Spring MVC specifies the HTTP status code to be returned by a controller method, providing a concise way to customize the response status.
+@ResponseStatus(HttpStatus.CREATED)
+@PostMapping("/users")
+public void createUser(@RequestBody User user) {
+    // Method implementation
+}
+
+23) @PropertySource
+The @PropertySource annotation in Spring specifies the location of external properties files to be loaded into the Spring Environment, enabling configuration settings to be managed externally.
+@Configuration
+@PropertySource("classpath:application.properties")
+public class AppConfig {
+    // Configuration class
+}
+
+24) @Profile 
+The @Profile annotation in Spring is used to indicate that a component should be active only when a certain profile is active in the Spring environment. Profiles provide a way to customize the application's configuration and behavior for different environments, such as development, testing, or production.
+@Profile({"dev", "test"})
+@Profile("!dev")
+--> To active particular profile --> spring.profile.active=dev
