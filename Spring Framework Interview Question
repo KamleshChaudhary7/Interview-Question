@@ -211,5 +211,60 @@ Factory Method -- Non Void, Static and No Autowiring
 
 Using @Autowired we can achieve Setter/Method Injection, Construction Injection, Field Injection
 
-9) What is Bean? Way of intialization of Bean
+9) What is Bean?
 Answer: "bean" is simply an object that is managed by the Spring IoC container. It is created, configured, and managed by the Spring container.
+<bean id="myBean" class="com.example.MyBean" scope="singleton" lazy-init="false" init-method="init" destroy-method="destroy" depends-on="dependency1, dependency2" name="bean1" autowire=""></bean>
+id: Specifies a unique identifier for the bean within the Spring application context.
+name: Provides an alternative or additional name for the bean. Multiple names can be separated by commas or semicolons.
+class: Specifies the fully qualified class name of the bean.
+scope: Defines the scope of the bean, determining how long the bean instance will last and how it will be shared. Common values include "singleton", "prototype", "request", "session", etc.
+lazy-init: Indicates whether the bean should be lazily initialized, i.e., created only when requested. Accepted values are "true" or "false".
+init-method: Specifies the name of a method to be called on the bean immediately after its initialization.
+destroy-method: Specifies the name of a method to be called on the bean before it is destroyed.
+factory-bean: Specifies the bean name of the factory bean that will create the target bean instance.
+factory-method: Specifies the name of the method on the factory bean that will create the target bean instance.
+depends-on: Specifies the bean names of other beans that must be initialized before this bean. otherwise BeanCreationException throws.
+
+public class MyBeanFactory {
+    public MyBean createInstance() {
+        return new MyBean();
+    }
+}
+<bean id="myBeanFactory" class="com.example.MyBeanFactory"/>
+<bean id="myBean" factory-bean="myBeanFactory" factory-method="createInstance"/>
+MyBean myBean = (MyBean) context.getBean("myBean");
+
+10) Life Cycle of Spring Bean
+Answer: When bean is intialized it might require to perform some action before it can come into usable state and when bean is destory might required some cleanup activity this known as Bean lifeCycle.
+
+The life cycle of a Spring bean involves several stages:
+Instantiation: The IOC container will look for the configuration metadata of and creates an instance of the bean.
+Population of Properties: After creation of bean Dependency will be injected through Constructor or Setter methods or field injection. aslo it is used to set bean properties.
+There are serval interfaces methods call if we have implemented. For Ex: BeanNameAware interface have setBeanName method to set the name of Bean.
+Bean Post-Processing: BeanPostProcessors method postProcessBeforeIntialization is called.
+IntializingBean Interface - afterPropertiesSet() method will be called.
+Initialization: Custom initialization logic is executed (@PostConstruct method or init-method).
+Bean Post-Processing: BeanPostProcessors method postProcessAfterIntialization is called.
+Bean Ready for Use: The bean is now ready for use.
+
+DisposableBean interface - destory() method will be called.
+Destruction: When the bean is no longer needed, destruction logic is executed (@PreDestroy method or destroy-method).
+
+Annotation -> Interface -> XML Based intialization method will be called.
+
+<beans default-init-method ="" default-destory-method="" /> -- Global defination
+
+11) Spring Bean Scope
+Answer: will added later.
+
+12) Autowiring
+Answer: Autowiring is technique used in a spring to enable automatic dependency injection.
+We don't need to explicitly specifying dependecny in the bean configuration.
+Types of Autowiring:
+No Autowiring: Default mode where dependencies must be explicitly configured.
+By Type: Spring searches for a bean of the same type and injects it.
+By Name: Spring searches for a bean with the same name as the property and injects it.
+Constructor: Similar to by-type autowiring but applies to constructor arguments. 
+auto-detect: First Use Constructor based then setter Based and then Field based injection used.
+
+In Java -- @Autowired which search bean byType.
