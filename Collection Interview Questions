@@ -358,9 +358,20 @@ Indexes cannot be obtained by using Iterator.
 Cannot modify or replace elements present in Collection.
 Cannot add elements and it throws ConcurrentModificationException.	
 Certain methods of Iterator are next(), remove() and hasNext().	
+- next() -> If Element Not available then NoSuchElementException
+- remove() -> If Not IllegalStateException.
+Use Iterator's remove() method to safely remove elements.
+Use Iterator's add() method to safely add elements during iteration
 
 ListIterator:
 Can traverse elements present in Collection both in forward and backward directions.
 Can only traverse List and not the other two.
 It has methods like nextIndex() and previousIndex() to obtain indexes of elements at any time while traversing List.
-We can modify or replace elements with the help of set(E e).Can easily add elements to a collection at any time.Certain methods of ListIterator are next(), previous(), hasNext(), hasPrevious(), add(E e).
+We can modify or replace elements with the help of set(E e).
+Can easily add elements to a collection at any time.
+Certain methods of ListIterator are next(), previous(), hasNext(), hasPrevious(), add(E e).
+
+For-Each Loop:
+Forward access and can not modify element.
+for-each loop can cycle through any collection of object ehich implements Iteratable interface.
+Ex: for(String str: list)
