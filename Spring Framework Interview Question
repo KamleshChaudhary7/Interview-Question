@@ -1,1 +1,215 @@
+1) What is Spring Framework?
+Answer: 
+Spring is a powerful open source, application framework created to reduce the complexity of enterprise application development. because it uses Java beans to implement enterprise applications that were previously possible only with enterprise beans.
+It's provide a comprehensive programming and configuration model for Java based enterprise application.
+It is light-weighted and loosely coupled application framework.
 
+- Spring is Framework of Framework. it provides support to various other frameworks such as Struts, Hibernate, Tapestry, EJB, JSF etc.
+- Purpose: Spring Framework is dependency injection framework to make Java based application to loosely coupled.
+
+2) What are the benefits of using Spring?
+Answer: Spring targets to make Java EE development easier. Here are the advantages of using it:
+Lightweight: Lightweight development with Java POJOs.
+Inversion of Control (IoC): Spring container takes care of wiring dependencies of various objects, instead of creating or looking for dependent objects
+Aspect-Oriented Programming (AOP): Spring supports AOP to separate business logic from system services
+IOC container: It is responsible for instantiating, configuring, and assembling the Spring beans by reading configuration metadata
+MVC framework: that is used to create web applications or RESTful web services, capable of returning XML/JSON responses
+Transaction management: reduces the amount of boiler-plate code in JDBC operations, file uploading, etc., either by using Java annotations or by Spring Bean XML configuration file
+JDBC Exception Handling: The JDBC abstraction layer of the Spring offers an exception hierarchy, which simplifies the error handling strategy.
+
+3) Spring Framework Modules
+Answer: 
+Data Access/Integration: This layer provides support to working with the database. Key components include:
+spring-jdbc: JDBC support and abstraction.
+spring-tx: Transaction management support.
+spring-orm: Integration with Object-Relational Mapping (ORM) frameworks like Hibernate, JPA, and JDO.
+spring-oxm: Object/XML Mapping support.
+
+Web: This module provides support for creating web applications. Key components include:
+spring-web: Core web functionalities and integration with the Servlet API.
+spring-webmvc: Spring MVC framework for building web applications.
+spring-websocket: WebSocket support for building real-time, interactive web applications.
+spring-webflux: Reactive web framework for building asynchronous and non-blocking web applications.
+
+AOP (Aspect-Oriented Programming): This module supports Aspect-Oriented Programming, allowing developers to modularize cross-cutting concerns. Key components include:
+spring-aop: AOP Alliance-compliant aspect-oriented programming implementation.
+spring-aspects: Integration with AspectJ, enabling AspectJ annotations to be used in Spring applications.
+
+Messaging: This module provides support for messaging-oriented architectures. Key components include:
+spring-messaging: Support for messaging protocols such as STOMP and WebSocket.
+
+Testing: This module provides support for testing Spring applications. Key components include:
+spring-test: Support for integration testing with JUnit or TestNG, including testing with Spring's IoC container.
+
+Instrumentation: This module provides support for application monitoring and profiling. Key components include:
+spring-instrument: Support for instrumentation of application classes.
+
+Core Container: This module provides the fundamental functionality of the Spring framework, including Inversion of Control (IoC) and Dependency Injection (DI). Key components include:
+spring-core: Core utilities, such as the IoC container and bean lifecycle management.
+spring-beans: BeanFactory for bean instantiation and configuration.
+spring-context: Building on spring-core and spring-beans, it provides additional features like internationalization, event propagation, and resource loading.
+
+Security: This module provides comprehensive security features for Java applications. Key components include:
+spring-security-core: Core security functionality, including authentication and authorization.
+spring-security-config: Configuration support for Spring Security.
+spring-security-web: Web security support for securing web applications.
+spring-security-taglibs: Security tag library for use with Spring MVC applications.
+spring-security-oauth2: OAuth 2.0 support for securing RESTful APIs.
+
+4) What is Dependency Injection?
+Answer: Dependency Injection (DI) is a design pattern where the dependencies of a class are provided externally rather than created internally. Using DI we can achieve IOC. Spring DI is a way to inject dependency of framework component. It has ablity supply dependencies of object to Another Object.
+
+5) What is Inversion of Control (IoC)?
+Answer: Spring IOC Container Create Object, Configure them and Assemebles their dependencies through DI and Manage lifecycle of beans during the execution.
+The container gets its instructions on what objects to instantiate, configure, and assemble by reading configuration metadata.
+Sprinfg configuration files can be XML, Java or Annotation Based.
+
+6) Why is it called "Inversion of Control" in the context of Spring Framework?
+Answer: In the traditional approach, the flow of control in a program is determined by the application's code. However, in the Spring Framework, IOC refers to the framework taking control of the instantiation and management of objects and their dependencies. This inversion of control means that instead of objects creating their dependencies themselves, the framework provides these dependencies to them. This shift in control from the application's code to the framework is why it's called "Inversion of Control."
+
+7) Type of IOC Container
+Answer : 
+BeanFactory: It is Root Interface of IOC Container. It provides basic functionality for features for DI (Dependency Injection) and lifecycle management of beans. 
+--> It uses Lazy initialization. - When method call for particular bean it loaded like using getBean() method.
+
+ApplicationContext: A sub-interface of BeanFactory. Provides advanced features on top of basic IoC functionalities. Alos adds application layer specific context such as WebApplicationContext for WebApplication.
+--> It supports internationalization 
+--> It supports annotation based dependency  
+--> It uses Eager initialization. - When IOC conatiner startup bean will be loaded.
+
+Standalone Application Implementation.
+- ClassPathXMLApplicationContext
+- FilePathXMLApplicationContext
+- AnnotationConfigApplicationContext
+
+WebApplication Context Implementation
+- AnnotationConfigWebApplication
+- XMLWebApplicationContext
+
+8) Ways to Provide configuration for IOC Container.
+Answer: 
+1) XML Based Configuration: XML configuration is the traditional approach to configuring Spring applications. In XML configuration, you define beans and their dependencies in XML files using the <bean> element and configure the container using XML-based metadata. 
+Example: 
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="userService" class="com.example.UserService">
+        <property name="userRepository" ref="userRepository"/>
+    </bean>
+    <bean id="userRepository" class="com.example.UserRepository"/>
+</beans>
+
+If file in same class path project then we use ClassPathXMLApplicationContext else FilePathXMLApplicationContext.
+
+2) Java Configuration (No XML): Java-based configuration allows you to configure the container using Java classes and annotations. You can use @Configuration to mark a class as a configuration class and @Bean to define beans.
+Example:
+@Configuration
+public class AppConfig {
+    @Bean
+    public UserService userService() {
+        return new UserService(userRepository());
+    }
+    @Bean
+    public UserRepository userRepository() {
+        return new UserRepository();
+    }
+}
+Also use @ComponentScan("pakage") --> at Class level to scan components by IOC.
+We can use AnnotationConfigApplicationContext(javaClass)
+
+3) Annotation-based Configuration: Spring supports annotation-based configuration, where you can use annotations like @Component, @Autowired, @Service, etc., to define beans and their dependencies. 
+Example:
+@Component
+public class UserService {
+    private final UserRepository userRepository;
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+}
+
+--> We can provide Configuration based XML or JAVA if we are using XML the <context:component-scan bas-package="package"/> required.
+
+==> If bean defination provided by multiple configuration then XML will take precedence. Higher will be XML then Annotation.
+
+8) Type of dependency Injection
+Answer:
+1) Constructor Injection: In constructor injection, dependencies are provided to a class through its constructor. This is typically done by passing the dependencies as parameters to the constructor when creating an instance of the class. Constructor injection ensures that all required dependencies are available when the object is created.
+Example: 
+public class MyClass {
+    private final Dependency dependency;
+
+    public MyClass(Dependency dependency) {
+        this.dependency = dependency;
+    }
+}
+
+XML Bean Dependency:
+<bean id="myClassFactory" class="com.example.MyClass" ref="dependency"/>
+<bean id="dependency" class="com.example.Dependency"/>
+
+For List
+<bean id="myClass" class="com.example.MyClass">
+      <constructor-arg>
+          <list>
+              <value>Item 1</value>
+              <value>Item 2</value>
+              <value>Item 3</value>
+          </list>
+      </constructor-arg>
+</bean>
+
+For Set -- <set><value>123</value><value>...</value></set>
+For Map -- <map><entry key="" value="" /><entry .../></map>
+For Properties -- <props><prop key="">value</prop><prop....></prop></props>
+
+For Parameters
+<bean>
+  <constructor-arg type="int" value="123"></constructor-arg>
+  <constructor-arg type="java.lang.String" value="Kkk" name="empName" index="0"></constructor-arg>
+</bean>
+-- Based on Name assigned value will be injected. by default type is String if String constructor is not mentioned in class then last register constructor will be called based on parameters.   
+
+2) Setter Injection: In setter injection, dependencies are provided to a class through setter methods. This allows for more flexibility, as dependencies can be changed or updated after the object has been instantiated. Setter injection is useful when dealing with optional dependencies or when dependencies need to be updated dynamically.
+
+Setter injection does require a no-arg constructor (Default/Explicit) or a no-arg static factory method to be present in the class being instantiated. This is because Spring needs a way to instantiate the object before calling its setter methods to inject dependencies.
+
+Example: For no-arg static Factory
+public class MyClass {
+    private Dependency dependency;
+    // Private constructor
+    private MyClass() {
+    }
+    // Setter method for Dependency
+    public void setDependency(Dependency dependency) {
+        this.dependency = dependency;
+    }
+    // Static factory method to create an instance of MyClass
+    public static MyClass createInstance() {
+        return new MyClass();
+    }
+}
+
+<!-- applicationContext.xml -->
+<beans>
+    <!-- Define factory bean for MyClass -->
+    <bean id="myClassFactory" class="com.example.MyClass" factory-method="createInstance"/>
+    <!-- Define Dependency bean -->
+    <bean id="dependency" class="com.example.Dependency"/>
+    <!-- Define MyClass bean and inject Dependency -->
+    <bean id="myClass" factory-bean="myClassFactory" factory-method="createInstance">
+        <property name="dependency" ref="dependency"/>
+    </bean>
+</beans>
+
+Factory Method -- Non Void, Static and No Autowiring
+<property name="studentName" value="" />
+<property name="studentName"><value>123</value></..>
+<property name="StudentRef" ref="" />
+<property name="StudentRef"><ref bean=""/></..>
+
+Using @Autowired we can achieve Setter/Method Injection, Construction Injection, Field Injection
+
+9) What is Bean? Way of intialization of Bean
+Answer: "bean" is simply an object that is managed by the Spring IoC container. It is created, configured, and managed by the Spring container.
