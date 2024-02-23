@@ -1,0 +1,21 @@
+1) @SpringBootApplication
+The @SpringBootApplication annotation is a meta-annotation that combines three commonly used Spring annotations: @Configuration, @EnableAutoConfiguration, and @ComponentScan. It is typically used to bootstrap Spring Boot applications and simplify their configuration.
+
+Here's what each of these annotations does:
+@Configuration: Indicates that the class is a Spring configuration class, allowing it to define beans using @Bean methods.
+
+@EnableAutoConfiguration: Enables Spring Boot's auto-configuration mechanism, which automatically configures the Spring application based on its classpath and the presence of certain dependencies. It eliminates the need for manual configuration in many cases by providing sensible defaults.
+
+@ComponentScan: Scans the specified package (and its subpackages) for Spring components, such as @Component, @Service, @Repository, etc., and registers them as Spring beans. This allows Spring to detect and manage these components automatically.
+
+2) @Bean
+The @Bean annotation in Spring is used to declare a method as a bean definition method within a configuration class. It creates and registers a bean instance in the Spring IoC container.
+
+3) @Import
+The @Import annotation in Spring is used to import one or more configuration classes into another configuration class. This allows for modularizing configuration and reusing existing configurations across multiple classes.
+Ex: 
+@Configuration
+@Import({Config1.class, Config2.class})
+
+4) @Autowired
+The @Autowired annotation in Spring is used to automatically wire (inject) beans into other beans or components. It helps manage dependencies between Spring beans without the need for explicit configuration.
